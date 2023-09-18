@@ -36,11 +36,11 @@
 > #### Payload 
 > `{"desc":"Licht Links","active":"true","visu":"1"}`
 >
-> | Name   | Wert         | Beschreibung                                                       |
-> |--------|--------------|--------------------------------------------------------------------|
-> | desc   |              | Anzeige Name auf Gerät und Visualisierung                          |
-> | active | true / false |                                                                    |
-> | visu   | 0 / 1 / 2    | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+> | Name   | Wert      | Beschreibung                                                       |
+> |--------|-----------|--------------------------------------------------------------------|
+> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
 
 
 > ### State
@@ -53,7 +53,7 @@
 >
 > | Name      | Wert         | Beschreibung                |
 > |-----------|--------------|-----------------------------|
-> | value     | on / off     |                             |
+> | value     | bool         | on / off                    |
 > | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
 
 
@@ -66,7 +66,7 @@
 >
 > | Name      | Wert         | Beschreibung                |
 > |-----------|--------------|-----------------------------|
-> | value     | on / off     |                             |
+> | value     | bool         | on / off                    |
 > | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
@@ -123,6 +123,85 @@
 > |-----------|--------------|-----------------------------|
 > | value     | float        |                             |
 > | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+
+
+******
+# Store / Rolläden
+
+> ### Info
+> #### Topic
+>   `iBBfly/C8F09E1266B0/asset/shutter_0/info`
+>
+>
+> #### Payload
+> `{"desc":"","active":"true","visu":"1"}`
+>
+> | Name   | Wert      | Beschreibung                                                       |
+> |--------|-----------|--------------------------------------------------------------------|
+> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+
+
+> ### State
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/shutter_0/state`
+>
+>
+> #### Payload
+> `{"value":"stop","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                                          |
+> |-----------|--------------|-------------------------------------------------------|
+> | value     | enum         | stop / up / down → Wenn nicht am Fahren dann ist stop |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                           |
+
+
+> ### Command
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/shutter_0/command`
+>
+>
+> #### Payload
+> `{"position":"50","slat":"50","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                |
+> |-----------|--------------|-----------------------------|
+> | value     | ??           | TODO                        |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+
+
+> ### Position
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/shutter_0/position`
+>
+>
+> #### Payload
+> `{"value":"125"}`
+> oder
+> `{"value":"%50"}`
+>
+> | Name      | Wert | Beschreibung                                             |
+> |-----------|------|----------------------------------------------------------|
+> | value     | int  | ohne vorzeichen → 0 - 255 mit Vorzeichen "%" dann 0-100% |
+
+
+> ### Slat
+> 
+> Winkel der Lamelle
+> 
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/shutter_0/slat`
+>
+>
+> #### Payload
+> `{"value":"125"}`
+> oder
+> `{"value":"%50"}`
+>
+> | Name      | Wert | Beschreibung                                             |
+> |-----------|------|----------------------------------------------------------|
+> | value     | int  | ohne vorzeichen → 0 - 255 mit Vorzeichen "%" dann 0-100% |
 
 
 ******
