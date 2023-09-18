@@ -1,3 +1,13 @@
+# Inhaltsverzeichnis
+1. [Connect Message](#Connect-Message)
+2. [Topic Allgemeiner Aufbau](#Topic-Allgemeiner-Aufbau)
+3. [Allgemein](#Allgemein)
+4. [Relais](#Relais)
+5. [Meteo](#Meteo)
+6. [Dimmer](#Dimmer)
+
+
+
 
 ## Connect Message
 
@@ -319,7 +329,7 @@
 >> | Name        | Wert         | Beschreibung                           |
 >> |-------------|--------------|----------------------------------------|
 >> | value       | float        | Prozent 0.0-100 mit einer Komma Stelle |
->> | temperature | float        | 2700 bis 6500 Kelvin                   |
+>> | temperature | int          | 2700 bis 6500 Kelvin                   |
 >> | timeStamp   | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
 >>
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
