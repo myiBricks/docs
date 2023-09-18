@@ -1,14 +1,14 @@
 
 ## Connect Message
 
-| Parameter     | Kommentar                        | Beispiel                     |
-|---------------|----------------------------------|------------------------------|
-| ClientId      | muss einmalig sein               | IBC5418ABDBC                 |
-| Clean Session | false = dauerhafte Sitzung       | false                        |
-| Username      | authentication and authorization | ibricks_babylon_IBC5418ABDBC |
-| Password      | authentication and authorization | MSIXQee5YBsAbzvwe4tfQrEr     |
-| Will Message  | Wille und Testament              |                              |
-| Keep Alive    | in s (ping/pong)                 | 60                           |
+| Parameter     | Kommentar                        | Beispiel                |
+|---------------|----------------------------------|-------------------------|
+| ClientId      | muss einmalig sein               | IBC5418ABDBC            |
+| Clean Session | false = dauerhafte Sitzung       | false                   |
+| Username      | authentication and authorization | IBC5418ABDBC            |
+| Password      | authentication and authorization | xxxxxxxxxxxxxxxxxxxxxxx |
+| Will Message  | Wille und Testament              |                         |
+| Keep Alive    | in s (ping/pong)                 | 60                      |
 
 
 ******
@@ -19,10 +19,59 @@
 
 ******
 ## Allgemein
-| Topic                                        | Payload                                                                         | 
-|----------------------------------------------|---------------------------------------------------------------------------------|
-| iBBfly/C8F09E1266B0/info                     | {"desc": "My Cello V2", "type": "CELLO", "subType": "1R1S1H"}                   |
-| iBBfly/C8F09E1266B0/asset/info               | {"relC":"1","metC":"10","shtC":"1","dimC":"2","dirC":"1","binC":"0","butC":"4"} |
+
+> ### Info Gerät
+> #### Topic
+>   `iBBfly/C8F09E1266B0/info`
+>
+>
+> #### Payload
+> `{"desc": "My Cello V2", "type": "CELLO", "subType": "1R1S1H"}`
+>
+> | Name    | Wert     | Beschreibung                              |
+> |---------|----------|-------------------------------------------|
+> | desc    | string   | Anzeige Name auf Gerät und Visualisierung |
+> | type    | string   | Geräte Type                               |
+> | subType | string   | Welche Hardware Funktion ist vorhanden    |
+
+
+> ### Kommando an das Gerät
+> #### Topic
+>   `iBBfly/C8F09E1266B0/command`
+>
+>
+> #### Payload
+> `{"value": "reboot","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                |
+> |-----------|--------------|-----------------------------|
+> | value     | enum         | Kommando siehe CommandsEnum |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+>
+> #### CommandsEnum
+>        Reboot,
+>        Update,
+>        Identifier,
+>        JumpOut,
+
+> ### Info Hardware Funktionen
+> #### Topic
+>   `iBBfly/C8F09E1266B0/asset/info`
+>
+>
+> #### Payload
+> `{"relC":"1","metC":"10","shtC":"1","dimC":"2","dirC":"1","binC":"0","butC":"4"}`
+>
+> | Name  | Wert | Beschreibung            |
+> |-------|------|-------------------------|
+> | relC  | int  | Anzahl Relais           |
+> | metC  | int  | Anzahl Messwerte        |
+> | shtC  | int  | Anzahl Store / Rolläden |
+> | dimC  | int  | Anzahl Dimmer           |
+> | dirC  | int  | Anzahl Regler           |
+> | binC  | int  | Anzahl Binär Eingänge   |
+> | butC  | int  | Anzahl Taster           |
+
 
 ******
 
@@ -91,6 +140,7 @@
 > | name   | string    | Technische Name                                                    |
 > | active | bool      | Ist lokale Funktion aktiv → true / false                           |
 > | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+>  
 >
 > #### MeteoType
 >        Temperature, // Temp
@@ -151,10 +201,10 @@
 > #### Payload
 > `{"value":"stop","timeStamp":"01.01.1970 22:24:21"}`
 >
-> | Name      | Wert         | Beschreibung                                          |
-> |-----------|--------------|-------------------------------------------------------|
-> | value     | enum         | stop / up / down → Wenn nicht am Fahren dann ist stop |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                           |
+> | Name      | Wert         | Beschreibung                                           |
+> |-----------|--------------|--------------------------------------------------------|
+> | value     | enum         | stop / up / down → Wenn nicht am Fahren dann ist Stopp |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                            |
 
 
 > ### Command
@@ -165,10 +215,11 @@
 > #### Payload
 > `{"position":"50","slat":"50","timeStamp":"01.01.1970 22:24:21"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | ??           | TODO                        |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert         | Beschreibung                                                                  |
+> |-----------|--------------|-------------------------------------------------------------------------------|
+> | value     | enum / float | stop / up / down / open / close oder prozent 0.0-100.0 mit einer Komma Stelle |
+> | slat      | enum / float | open / close oder prozent 0.0-100 mit einer Komma Stelle                      |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                                                   |
 
 
 > ### Position
@@ -177,13 +228,11 @@
 >
 >
 > #### Payload
-> `{"value":"125"}`
-> oder
-> `{"value":"%50"}`
+> `{"value":"50"}`
 >
-> | Name      | Wert | Beschreibung                                             |
-> |-----------|------|----------------------------------------------------------|
-> | value     | int  | ohne vorzeichen → 0 - 255 mit Vorzeichen "%" dann 0-100% |
+> | Name    | Wert  | Beschreibung                           |
+> |---------|-------|----------------------------------------|
+> | value   | float | Prozent 0.0-100 mit einer Komma Stelle |
 
 
 > ### Slat
@@ -195,13 +244,84 @@
 >
 >
 > #### Payload
-> `{"value":"125"}`
-> oder
-> `{"value":"%50"}`
+> `{"value":"50"}`
 >
-> | Name      | Wert | Beschreibung                                             |
-> |-----------|------|----------------------------------------------------------|
-> | value     | int  | ohne vorzeichen → 0 - 255 mit Vorzeichen "%" dann 0-100% |
+> | Name  | Wert  | Beschreibung                           |
+> |-------|-------|----------------------------------------|
+> | value | float | Prozent 0.0-100 mit einer Komma Stelle |
 
+
+******
+
+# Dimmer
+
+> ### Info
+> #### Topic
+>   `iBBfly/C8F09E1266B0/asset/dimmer_0/info`
+>
+>
+> #### Payload
+> `{"desc":"Licht Links","type":"white","active":"true","visu":"1"}`
+>
+> | Name   | Wert      | Beschreibung                                                       |
+> |--------|-----------|--------------------------------------------------------------------|
+> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | type   | enum      | Siehe DimmerType                                                   |
+> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+>
+> #### DimmerType
+>        white, // Standart Dimmer
+>        c,     // Farbe h/s/v 
+>        ct,    // FarbTemperatur Tunablewhite
+>        cct,   // Farbe und FarbTemperatur
+
+> ### State
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/dimmer_0/state`
+>
+>
+> #### Payload
+> `{"value":"22.3","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                           |
+> |-----------|--------------|----------------------------------------|
+> | value     | float        | Prozent 0.0-100 mit einer Komma Stelle |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+
+
+> ### Command
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/dimmer_0/command`
+>
+>> #### Payload white
+>> `{"value":"54.2","timeStamp":"01.01.1970 22:24:21"}`
+>>
+>> | Name      | Wert         | Beschreibung                           |
+>> |-----------|--------------|----------------------------------------|
+>> | value     | float        | Prozent 0.0-100 mit einer Komma Stelle |
+>> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>
+>> #### Payload color
+>> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"01.01.1970 22:24:21"}`
+>>
+>> | Name       | Wert         | Beschreibung                           |
+>> |------------|--------------|----------------------------------------|
+>> | hue        | float        | 0.0-360 mit einer Komma Stelle         |
+>> | saturation | float        | Prozent 0.0-100 mit einer Komma Stelle |
+>> | value      | float        | Prozent 0.0-100 mit einer Komma Stelle |
+>> | timeStamp  | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>>
+>
+>> #### Payload color temperature
+>> `{"value":"54.2","temperature":"54.2","timeStamp":"01.01.1970 22:24:21"}`
+>>
+>> | Name        | Wert         | Beschreibung                           |
+>> |-------------|--------------|----------------------------------------|
+>> | value       | float        | Prozent 0.0-100 mit einer Komma Stelle |
+>> | temperature | float        | 2700 bis 6500 Kelvin                   |
+>> | timeStamp   | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>>
+> Wird nach dem Ausführen vom Gerät wieder gelöscht
 
 ******
