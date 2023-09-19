@@ -1,10 +1,16 @@
+[//]: # (https://stackoverflow.com/questions/11948245/markdown-to-create-pages-and-table-of-contents#)
 # Inhaltsverzeichnis
 1. [Connect Message](#Connect-Message)
 2. [Topic Allgemeiner Aufbau](#Topic-Allgemeiner-Aufbau)
 3. [Allgemein](#Allgemein)
 4. [Relais](#Relais)
 5. [Meteo](#Meteo)
-6. [Dimmer](#Dimmer)
+6. [Store / Rolläden](#Store)
+7. [Dimmer](#Dimmer)
+8. [Director](#Director)
+9. [Detector](#Detector)
+10. [Button](#Button)
+11. [Scene](#Scene)
 
 
 
@@ -186,7 +192,7 @@
 
 
 ******
-# Store / Rolläden
+# Store
 
 > ### Info
 > #### Topic
@@ -333,5 +339,168 @@
 >> | timeStamp   | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
 >>
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
+
+******
+
+# Director
+
+> ### Info
+> #### Topic
+>   `iBBfly/C8F09E1266B0/asset/director_0/info`
+>
+>
+> #### Payload
+> `{"desc":"","active":"true","visu":"1"}`
+>
+> | Name   | Wert      | Beschreibung                                                       |
+> |--------|-----------|--------------------------------------------------------------------|
+> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+
+
+> ### State
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/director_0/state`
+>
+>
+> #### Payload
+> `{"value":"20.1","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                                  |
+> |-----------|--------------|-----------------------------------------------|
+> | value     | float        | °C Sollwert Temperatur mit einer Komma Stelle |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                   |
+
+
+> ### Command
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/director_0/command`
+>
+> #### Payload
+> `{"value":"off","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                                  |
+> |-----------|--------------|-----------------------------------------------|
+> | value     | float        | °C Sollwert Temperatur mit einer Komma Stelle |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                   |
+>
+> Wird nach dem Ausführen vom Gerät wieder gelöscht
+
+
+******
+
+# Detector
+
+> ### Info
+> #### Topic
+>   `iBBfly/C8F09E1266B0/asset/detector_0/info`
+>
+>
+> #### Payload
+> `{"desc":"","active":"true","visu":"1"}`
+>
+> | Name   | Wert      | Beschreibung                                                       |
+> |--------|-----------|--------------------------------------------------------------------|
+> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+
+
+> ### State
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/detector_0/state`
+>
+>
+> #### Payload
+> `{"value":"off","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                |
+> |-----------|--------------|-----------------------------|
+> | value     | bool         | on / off                    |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+
+
+******
+
+# Button
+
+> ### Info
+> #### Topic
+>   `iBBfly/C8F09E1266B0/asset/button_0/info`
+>
+>
+> #### Payload
+> `{"desc":"","active":"true","visu":"1"}`
+>
+> | Name   | Wert      | Beschreibung                                                       |
+> |--------|-----------|--------------------------------------------------------------------|
+> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+
+
+> ### State
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/button_0/state`
+>
+>
+> #### Payload
+> `{"value":"click","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                |
+> |-----------|--------------|-----------------------------|
+> | value     | enum         | press / release             |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+
+> ### Event
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/button_0/event`
+>
+>
+> #### Payload
+> `{"value":"click","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                |
+> |-----------|--------------|-----------------------------|
+> | value     | enum         | click / longClick           |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+
+
+******
+
+# Scene
+
+> ### Available
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/scene/available`
+>
+> #### Payload
+> `{"scenes":[{"id":"Aufraeumen","desc":"Zimmer an"},{"id":"Abend","desc":"Nacht"}]}`
+>
+> | Name   | Wert  | Beschreibung         |
+> |--------|-------|----------------------|
+> | scenes | array | {"id":"","desc":""}  |
+>>
+>> | Name | Wert   | Beschreibung  |
+>> |------|--------|---------------|
+>> | id   | string | Eindeutige ID |
+>> | desc | string | Anzeige Text  |
+>>
+
+> ### Event
+> #### Topic
+> `iBBfly/C8F09E1266B0/asset/scene/event`
+>
+>
+> #### Payload
+> `{"value":"click","timeStamp":"01.01.1970 22:24:21"}`
+>
+> | Name      | Wert         | Beschreibung                |
+> |-----------|--------------|-----------------------------|
+> | id        | string       | Eindeutige ID               |
+> | value     | bool         | on / off                    |
+> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+
 
 ******
