@@ -15,7 +15,7 @@
 
 
 
-## Connect Message
+# Connect Message
 
 | Parameter     | Kommentar                        | Beispiel                |
 |---------------|----------------------------------|-------------------------|
@@ -28,13 +28,13 @@
 
 
 ******
-## Topic Allgemeiner Aufbau
+# Topic Allgemeiner Aufbau
 
     {Service}/{ClientId}/{asset}/{channel}/{command}
 
 
 ******
-## Allgemein
+# Allgemein
 
 > ### Info Gerät
 > #### Topic
@@ -69,6 +69,7 @@
 >        Update,
 >        Identifier,
 >        JumpOut,
+>        MqttReconnect,
 
 > ### Info Hardware Funktionen
 > #### Topic
@@ -277,14 +278,16 @@
 >
 >
 > #### Payload
-> `{"desc":"Licht Links","type":"white","active":"true","visu":"1"}`
+> `{"desc":"Licht Links","type":"white","active":"true","visu":"1","mincoltemp":"2700","maxcoltemp":"6500"}`
 >
-> | Name   | Wert      | Beschreibung                                                       |
-> |--------|-----------|--------------------------------------------------------------------|
-> | desc   | string    | Anzeige Name auf Gerät und Visualisierung                          |
-> | type   | enum      | Siehe DimmerType                                                   |
-> | active | bool      | Ist lokale Funktion aktiv → true / false                           |
-> | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+> | Name       | Wert      | Beschreibung                                                       |
+> |------------|-----------|--------------------------------------------------------------------|
+> | desc       | string    | Anzeige Name auf Gerät und Visualisierung                          |
+> | type       | enum      | Siehe DimmerType                                                   |
+> | active     | bool      | Ist lokale Funktion aktiv → true / false                           |
+> | visu       | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
+> | mincoltemp | int       | Optional bei FarbTemperatur Tunablewhite                           |
+> | maxcoltemp | int       | Optional bei FarbTemperatur Tunablewhite                           |
 >
 > #### DimmerType
 >        white, // Standart Dimmer
