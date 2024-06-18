@@ -5,7 +5,7 @@
 3. [Allgemein](#Allgemein)
 4. [Relais](#Relais)
 5. [Meteo](#Meteo)
-6. [Store / Rolläden](#Store)
+6. [Jalousie / Rolläden](#Jalousie)
 7. [Dimmer](#Dimmer)
 8. [Director](#Director)
 9. [Detector](#Detector)
@@ -57,17 +57,17 @@
 >
 >
 > #### Payload
-> `{"value": "reboot","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value": "reboot","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | enum         | Kommando siehe CommandsEnum |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | value     | enum   | Kommando siehe CommandsEnum |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 >
 > #### CommandsEnum
 >        Reboot,
 >        Update,
->        Identifier,
+>        Identify,
 >        JumpOut,
 >        MqttReconnect,
 
@@ -83,7 +83,7 @@
 > |-------|------|-------------------------|
 > | relC  | int  | Anzahl Relais           |
 > | metC  | int  | Anzahl Messwerte        |
-> | shtC  | int  | Anzahl Store / Rolläden |
+> | shtC  | int  | Anzahl Jalousie / Rolläden |
 > | dimC  | int  | Anzahl Dimmer           |
 > | dirC  | int  | Anzahl Regler           |
 > | binC  | int  | Anzahl Binär Eingänge   |
@@ -115,12 +115,12 @@
 >
 >
 > #### Payload
-> `{"value":"off","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | bool         | on / off                    |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | value     | bool   | on / off                    |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 
 
 > ### Command
@@ -128,12 +128,12 @@
 > `iBBfly/C8F09E1266B0/asset/relais_0/command`
 >
 > #### Payload
-> `{"value":"off","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | bool         | on / off                    |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | value     | bool   | on / off                    |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -184,16 +184,16 @@
 >
 >
 > #### Payload
-> `{"value":"21.5","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"21.5","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | float        |                             |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | value     | float  |                             |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 
 
 ******
-# Store
+# Jalousie
 
 > ### Info
 > #### Topic
@@ -216,12 +216,12 @@
 >
 >
 > #### Payload
-> `{"value":"stop","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"stop","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                                           |
-> |-----------|--------------|--------------------------------------------------------|
-> | value     | enum         | stop / up / down → Wenn nicht am Fahren dann ist Stopp |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                            |
+> | Name      | Wert   | Beschreibung                                           |
+> |-----------|--------|--------------------------------------------------------|
+> | value     | enum   | stop / up / down → Wenn nicht am Fahren dann ist Stopp |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000                            |
 
 
 > ### Command
@@ -230,13 +230,13 @@
 >
 >
 > #### Payload
-> `{"position":"50","slat":"50","timeStamp":"01.01.1970 22:24:21"}`
+> `{"position":"50","slat":"50","timeStamp":"748695077"}`
 >
 > | Name      | Wert         | Beschreibung                                                                  |
 > |-----------|--------------|-------------------------------------------------------------------------------|
 > | value     | enum / float | stop / up / down / open / close oder prozent 0.0-100.0 mit einer Komma Stelle |
 > | slat      | enum / float | open / close oder prozent 0.0-100 mit einer Komma Stelle                      |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                                                   |
+> | timeStamp | uint         | Ticks in sek sei 01.01.2000                                                   |
 
 
 > ### Position
@@ -245,11 +245,12 @@
 >
 >
 > #### Payload
-> `{"value":"50"}`
+> `{"value":"50","timeStamp":"748695077"}`
 >
-> | Name    | Wert  | Beschreibung                           |
-> |---------|-------|----------------------------------------|
-> | value   | float | Prozent 0.0-100 mit einer Komma Stelle |
+> | Name      | Wert   | Beschreibung                             |
+> |-----------|--------|------------------------------------------|
+> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle   |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000              |
 
 
 > ### Slat
@@ -261,11 +262,12 @@
 >
 >
 > #### Payload
-> `{"value":"50"}`
+> `{"value":"50","timeStamp":"748695077"}`
 >
-> | Name  | Wert  | Beschreibung                           |
-> |-------|-------|----------------------------------------|
-> | value | float | Prozent 0.0-100 mit einer Komma Stelle |
+> | Name      | Wert   | Beschreibung                             |
+> |-----------|--------|------------------------------------------|
+> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle   |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000              |
 
 
 ******
@@ -300,13 +302,34 @@
 > `iBBfly/C8F09E1266B0/asset/dimmer_0/state`
 >
 >
-> #### Payload
-> `{"value":"22.3","timeStamp":"01.01.1970 22:24:21"}`
+>> #### Payload white
+>> `{"value":"54.2","timeStamp":"748695077"}`
+>>
+>> | Name      | Wert   | Beschreibung                           |
+>> |-----------|--------|----------------------------------------|
+>> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | timeStamp | uint   | Ticks in sek sei 01.01.2000            |
 >
-> | Name      | Wert         | Beschreibung                           |
-> |-----------|--------------|----------------------------------------|
-> | value     | float        | Prozent 0.0-100 mit einer Komma Stelle |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>> #### Payload color
+>> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"748695077"}`
+>>
+>> | Name       | Wert   | Beschreibung                           |
+>> |------------|--------|----------------------------------------|
+>> | hue        | float  | 0.0-360 mit einer Komma Stelle         |
+>> | saturation | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | value      | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | timeStamp  | uint   | Ticks in sek sei 01.01.2000            |
+>>
+>
+>> #### Payload color temperature
+>> `{"value":"54.2","temperature":"54.2","timeStamp":"748695077"}`
+>>
+>> | Name        | Wert   | Beschreibung                           |
+>> |-------------|--------|----------------------------------------|
+>> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | temperature | int    | 2700 bis 6500 Kelvin                   |
+>> | timeStamp   | uint   | Ticks in sek sei 01.01.2000            |
+>>
 
 
 > ### Command
@@ -314,32 +337,32 @@
 > `iBBfly/C8F09E1266B0/asset/dimmer_0/command`
 >
 >> #### Payload white
->> `{"value":"54.2","timeStamp":"01.01.1970 22:24:21"}`
+>> `{"value":"54.2","timeStamp":"748695077"}`
 >>
->> | Name      | Wert         | Beschreibung                           |
->> |-----------|--------------|----------------------------------------|
->> | value     | float        | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>> | Name      | Wert   | Beschreibung                           |
+>> |-----------|--------|----------------------------------------|
+>> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | timeStamp | uint   | Ticks in sek sei 01.01.2000            |
 >
 >> #### Payload color
->> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"01.01.1970 22:24:21"}`
+>> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"748695077"}`
 >>
->> | Name       | Wert         | Beschreibung                           |
->> |------------|--------------|----------------------------------------|
->> | hue        | float        | 0.0-360 mit einer Komma Stelle         |
->> | saturation | float        | Prozent 0.0-100 mit einer Komma Stelle |
->> | value      | float        | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp  | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>> | Name       | Wert   | Beschreibung                           |
+>> |------------|--------|----------------------------------------|
+>> | hue        | float  | 0.0-360 mit einer Komma Stelle         |
+>> | saturation | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | value      | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | timeStamp  | uint   | Ticks in sek sei 01.01.2000            |
 >>
 >
 >> #### Payload color temperature
->> `{"value":"54.2","temperature":"54.2","timeStamp":"01.01.1970 22:24:21"}`
+>> `{"value":"54.2","temperature":"54.2","timeStamp":"748695077"}`
 >>
->> | Name        | Wert         | Beschreibung                           |
->> |-------------|--------------|----------------------------------------|
->> | value       | float        | Prozent 0.0-100 mit einer Komma Stelle |
->> | temperature | int          | 2700 bis 6500 Kelvin                   |
->> | timeStamp   | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss            |
+>> | Name        | Wert   | Beschreibung                           |
+>> |-------------|--------|----------------------------------------|
+>> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle |
+>> | temperature | int    | 2700 bis 6500 Kelvin                   |
+>> | timeStamp   | uint   | Ticks in sek sei 01.01.2000            |
 >>
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -368,12 +391,12 @@
 >
 >
 > #### Payload
-> `{"value":"20.1","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"20.1","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                                  |
-> |-----------|--------------|-----------------------------------------------|
-> | value     | float        | °C Sollwert Temperatur mit einer Komma Stelle |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                   |
+> | Name      | Wert   | Beschreibung                                  |
+> |-----------|--------|-----------------------------------------------|
+> | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000                   |
 
 
 > ### Command
@@ -381,12 +404,12 @@
 > `iBBfly/C8F09E1266B0/asset/director_0/command`
 >
 > #### Payload
-> `{"value":"off","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                                  |
-> |-----------|--------------|-----------------------------------------------|
-> | value     | float        | °C Sollwert Temperatur mit einer Komma Stelle |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss                   |
+> | Name      | Wert   | Beschreibung                                  |
+> |-----------|--------|-----------------------------------------------|
+> | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000                   |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -416,12 +439,12 @@
 >
 >
 > #### Payload
-> `{"value":"off","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | bool         | on / off                    |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | value     | bool   | on / off                    |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 
 
 ******
@@ -443,31 +466,18 @@
 > | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
 
 
-> ### State
-> #### Topic
-> `iBBfly/C8F09E1266B0/asset/button_0/state`
->
->
-> #### Payload
-> `{"value":"click","timeStamp":"01.01.1970 22:24:21"}`
->
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | enum         | press / release             |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
-
 > ### Event
 > #### Topic
 > `iBBfly/C8F09E1266B0/asset/button_0/event`
 >
 >
 > #### Payload
-> `{"value":"click","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"click","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | value     | enum         | click / longClick           |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | value     | enum   | click / longClick           |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 
 
 ******
@@ -497,13 +507,13 @@
 >
 >
 > #### Payload
-> `{"value":"click","timeStamp":"01.01.1970 22:24:21"}`
+> `{"value":"click","timeStamp":"748695077"}`
 >
-> | Name      | Wert         | Beschreibung                |
-> |-----------|--------------|-----------------------------|
-> | id        | string       | Eindeutige ID               |
-> | value     | bool         | on / off                    |
-> | timeStamp | Datum / Zeit | Format: dd.MM.yyyy HH:mm:ss |
+> | Name      | Wert   | Beschreibung                |
+> |-----------|--------|-----------------------------|
+> | id        | string | Eindeutige ID               |
+> | value     | bool   | on / off                    |
+> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 
 
 ******
