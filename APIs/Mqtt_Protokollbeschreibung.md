@@ -5,7 +5,7 @@
 3. [Allgemein](#Allgemein)
 4. [Relais](#Relais)
 5. [Meteo](#Meteo)
-6. [Jalousie / Rolläden](#Jalousie)
+6. [Jalousie / Rollläden](#Jalousie)
 7. [Dimmer](#Dimmer)
 8. [Director](#Director)
 9. [Detector](#Detector)
@@ -28,7 +28,7 @@
 
 
 ******
-# Topic Allgemeiner Aufbau
+# Topic allgemeiner Aufbau
 
     {Service}/{ClientId}/{asset}/{channel}/{command}
 
@@ -36,7 +36,7 @@
 ******
 # Allgemein
 
-> ### Info Gerät
+> ### Information Gerät
 > #### Topic
 >   `iBBfly/C8F09E1266B0/info`
 >
@@ -49,9 +49,23 @@
 > | desc    | string   | Anzeige Name auf Gerät und Visualisierung |
 > | type    | string   | Geräte Type                               |
 > | subType | string   | Welche Hardware Funktion ist vorhanden    |
+> 
+> 
+> ### Heartbeat Gerät
+> #### Topic
+>   `iBBfly/C8F09E1266B0/heartbeat`
+>
+>
+> #### Payload
+> `{"timeStamp":"772010416","uptime":"83963020"}`
+>
+> | Name        | Wert   | Beschreibung                |
+> |-------------|--------|-----------------------------|
+> | timeStamp   | uint   | Ticks in sek sei 01.01.2000 |
+> | uptime      | uint   | Ticks in sek sei start      |
 
 
-> ### Kommando an das Gerät
+> ### Gerät Kommando 
 > #### Topic
 >   `iBBfly/C8F09E1266B0/command`
 >
@@ -71,7 +85,7 @@
 >        JumpOut,
 >        MqttReconnect,
 
-> ### Info Hardware Funktionen
+> ### Information Hardware Funktionen
 > #### Topic
 >   `iBBfly/C8F09E1266B0/asset/info`
 >
@@ -79,15 +93,56 @@
 > #### Payload
 > `{"relC":"1","metC":"10","shtC":"1","dimC":"2","dirC":"1","binC":"0","butC":"4"}`
 >
-> | Name  | Wert | Beschreibung            |
-> |-------|------|-------------------------|
-> | relC  | int  | Anzahl Relais           |
-> | metC  | int  | Anzahl Messwerte        |
-> | shtC  | int  | Anzahl Jalousie / Rolläden |
-> | dimC  | int  | Anzahl Dimmer           |
-> | dirC  | int  | Anzahl Regler           |
-> | binC  | int  | Anzahl Binär Eingänge   |
-> | butC  | int  | Anzahl Taster           |
+> | Name  | Wert | Beschreibung                |
+> |-------|------|-----------------------------|
+> | relC  | int  | Anzahl Relais               |
+> | metC  | int  | Anzahl Messwerte            |
+> | shtC  | int  | Anzahl Jalousie / Rollläden |
+> | dimC  | int  | Anzahl Dimmer               |
+> | dirC  | int  | Anzahl Regler               |
+> | binC  | int  | Anzahl Binär Eingänge       |
+> | butC  | int  | Anzahl Taster               |
+>
+
+>## Geräte Konfiguration
+> 
+> - Konfigurationen werden erst angelegt (visu sichtbar) wenn einmalig vom Gerät geschickt
+> - Wenn im Payload "Wert" ein "get" steht sollte das Gerät im topic "state"
+    > mit dem gleichen "ConfigSystemEnum" antworten.
+    > Wenn die Konfiguration auf dem Gerät nicht vorhanden ist dann als "Wert" → "notFound"
+> - Wenn die Konfiguration ausserhalb des Wertebereiches ist, dann den korrigierten wert im topic "state"
+    > zurückschicken oder wenn nicht korrigiert werden kann dann als "Wert" → "wrongValue"
+> - Im Payload kann ein oder mehrere Konfiguration-Parameter sein
+> - Konfigurationen, die nicht als Enum definiert sind, werden Server seitig verworfen 
+    > und als antwort kommt im topic "command" im payload "Wert" → "notFound"
+> 
+> 
+>### vom Gerät 
+> #### Topic
+>   `iBBfly/C8F09E1266B0/config/state`
+> 
+>### an das Gerät 
+> #### Topic
+>   `iBBfly/C8F09E1266B0/config/command`
+> 
+>
+> #### Payload
+> `{"ConfigSystemEnum": "Wert","timeStamp":"748695077"}`
+>
+> `{"ConfigSystemEnum1": "Wert1", "ConfigSystemEnum2": "Wert2" ,"timeStamp":"748695077"}`
+> 
+>
+> | Name        | Wert  | Beschreibung                |
+> |-------------|-------|-----------------------------|
+> | configEnum  | value | siehe ConfigSystemEnum      |
+> | timeStamp   | uint  | Ticks in sek sei 01.01.2000 |
+>
+> 
+> #### ConfigSystemEnum
+> | Name            | Kurz Name | Wert | Wert Bereich | Beschreibung                                            |
+> |-----------------|-----------|------|--------------|---------------------------------------------------------|
+> | centralFunction | CF        | bool | true / false | Sendet dieses Gerät Zentral Funktionen (z.B. Alles Aus) |
+> |                 |           |      |              |                                                         |
 
 
 ******
@@ -136,6 +191,37 @@
 > | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
+
+> 
+>### Relais Konfiguration
+>
+>
+>### vom Relais
+> #### Topic
+>   `iBBfly/C8F09E1266B0/relais_0/config/state`
+>
+>### an das Relais
+> #### Topic
+>   `iBBfly/C8F09E1266B0/relais_0/config/command`
+>
+>
+> #### Payload
+> `{"ConfigRelaisEnum": "Wert","timeStamp":"748695077"}`
+>
+>
+>
+> | Name        | Wert  | Beschreibung                |
+> |-------------|-------|-----------------------------|
+> | configEnum  | value | siehe ConfigRelaisEnum      |
+> | timeStamp   | uint  | Ticks in sek sei 01.01.2000 |
+>
+>
+> #### ConfigRelaisEnum
+> | Name            | Kurz Name | Wert | Wert Bereich   | Beschreibung                                                  |
+> |-----------------|-----------|------|----------------|---------------------------------------------------------------|
+> | centralFunction | CF        | bool | true / false   | Reagiert dieses Gerät auf Zentral Funktionen (z.B. Alles Aus) |
+> | GreenSwitch     | GS        | uint | 0-86400 in Sek | Automatisch ausschalten nach eingestellte Zeit                |
+>  
 
 
 ******
@@ -288,8 +374,8 @@
 > | type       | enum      | Siehe DimmerType                                                   |
 > | active     | bool      | Ist lokale Funktion aktiv → true / false                           |
 > | visu       | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
-> | mincoltemp | int       | Optional bei FarbTemperatur Tunablewhite                           |
-> | maxcoltemp | int       | Optional bei FarbTemperatur Tunablewhite                           |
+> | mincoltemp | int       | Optional bei Farbtemperatur Tunable white                          |
+> | maxcoltemp | int       | Optional bei Farbtemperatur Tunable white                          |
 >
 > #### DimmerType
 >        white, // Standart Dimmer
@@ -480,6 +566,18 @@
 > | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
 
 
+
+> ### Cello2 
+> 
+> #### Taster anordnung
+>
+> ` button_0 ¦ button_1 `\
+> ` ---------¦--------- `\
+> ` button_2 ¦ button_3 `
+> 
+> 
+
+
 ******
 
 # Scene
@@ -494,12 +592,12 @@
 > | Name   | Wert  | Beschreibung         |
 > |--------|-------|----------------------|
 > | scenes | array | {"id":"","desc":""}  |
->>
->> | Name | Wert   | Beschreibung  |
->> |------|--------|---------------|
->> | id   | string | Eindeutige ID |
->> | desc | string | Anzeige Text  |
->>
+>
+> | Name | Wert   | Beschreibung  |
+> |------|--------|---------------|
+> | id   | string | Eindeutige ID |
+> | desc | string | Anzeige Text  |
+>
 
 > ### Event
 > #### Topic
@@ -507,7 +605,7 @@
 >
 >
 > #### Payload
-> `{"value":"click","timeStamp":"748695077"}`
+> `{"id":"Aufraeumen","value":"on","timeStamp":"748695077"}`
 >
 > | Name      | Wert   | Beschreibung                |
 > |-----------|--------|-----------------------------|
