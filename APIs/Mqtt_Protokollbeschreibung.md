@@ -107,36 +107,44 @@
 >## Geräte Konfiguration
 > 
 > - Konfigurationen werden erst angelegt (visu sichtbar) wenn einmalig vom Gerät geschickt
-> - Wenn im Payload "Wert" ein "get" steht sollte das Gerät im topic "state"
-    > mit dem gleichen "ConfigSystemEnum" antworten.
-    > Wenn die Konfiguration auf dem Gerät nicht vorhanden ist dann als "Wert" → "notFound"
+> - Pro Konfiguration Parameter gibt es eigene topics. state / command
+> - Wenn im Payload "get" steht, sollte das Gerät im topic "state"
+    > mit dem gleichen "ConfigSystemEnum" topic antworten.
+    > Wenn die Konfiguration auf dem Gerät nicht vorhanden ist dann als "error" → "notFound"
 > - Wenn die Konfiguration ausserhalb des Wertebereiches ist, dann den korrigierten wert im topic "state"
-    > zurückschicken oder wenn nicht korrigiert werden kann dann als "Wert" → "wrongValue"
-> - Im Payload kann ein oder mehrere Konfiguration-Parameter sein
+    > zurückschicken oder wenn nicht korrigiert werden kann dann als "error" → "wrongValue"
 > - Konfigurationen, die nicht als Enum definiert sind, werden Server seitig verworfen 
-    > und als antwort kommt im topic "command" im payload "Wert" → "notFound"
+    > und als antwort kommt im topic "command" im payload "error" → "notFound"
 > 
 > 
 >### vom Gerät 
 > #### Topic
->   `iBBfly/C8F09E1266B0/config/state`
+>   `iBBfly/C8F09E1266B0/config/{ConfigSystemEnum}/state`
 > 
 >### an das Gerät 
 > #### Topic
->   `iBBfly/C8F09E1266B0/config/command`
+>   `iBBfly/C8F09E1266B0/config/{ConfigSystemEnum}/command`
 > 
 >
 > #### Payload
-> `{"ConfigSystemEnum": "Wert","timeStamp":"748695077"}`
->
-> `{"ConfigSystemEnum1": "Wert1", "ConfigSystemEnum2": "Wert2" ,"timeStamp":"748695077"}`
+> ###### Wert "command"
+> `{"get": "","timeStamp":"748695077"}` \
+> `{"put": "Wert","timeStamp":"748695077"}`
 > 
+> ###### Wert "state"
+> `{"value": "","timeStamp":"748695077"}`
+> 
+> ###### Fehler
+> `{"error": "ConfigErrorEnum","timeStamp":"748695077"}`
 >
-> | Name        | Wert  | Beschreibung                |
-> |-------------|-------|-----------------------------|
-> | configEnum  | value | siehe ConfigSystemEnum      |
-> | timeStamp   | uint  | Ticks in sek sei 01.01.2000 |
->
+> 
+> 
+>#### ConfigErrorEnum
+> | Name       | Beschreibung                                                |
+> |------------|-------------------------------------------------------------|
+> | notFound   | Wenn Parameter nicht vorhanden                              |
+> | wrongValue | Wen wert ausserhalb gültigen bereich oder wertetyp ungültig |
+
 > 
 > #### ConfigSystemEnum
 > | Name            | Kurz Name | Wert | Wert Bereich | Beschreibung                                            |
@@ -198,22 +206,24 @@
 >
 >### vom Relais
 > #### Topic
->   `iBBfly/C8F09E1266B0/relais_0/config/state`
+>   `iBBfly/C8F09E1266B0/relais_0/config/{ConfigRelaisEnum}/state`
 >
 >### an das Relais
 > #### Topic
->   `iBBfly/C8F09E1266B0/relais_0/config/command`
+>   `iBBfly/C8F09E1266B0/relais_0/config/{ConfigRelaisEnum}/command`
 >
 >
 > #### Payload
-> `{"ConfigRelaisEnum": "Wert","timeStamp":"748695077"}`
+> ###### Wert "command"
+> `{"get": "","timeStamp":"748695077"}` \
+> `{"put": "Wert","timeStamp":"748695077"}`
 >
+> ###### Wert "state"
+> `{"value": "","timeStamp":"748695077"}`
 >
+> ###### Fehler
+> `{"error": "ConfigErrorEnum","timeStamp":"748695077"}`
 >
-> | Name        | Wert  | Beschreibung                |
-> |-------------|-------|-----------------------------|
-> | configEnum  | value | siehe ConfigRelaisEnum      |
-> | timeStamp   | uint  | Ticks in sek sei 01.01.2000 |
 >
 >
 > #### ConfigRelaisEnum
