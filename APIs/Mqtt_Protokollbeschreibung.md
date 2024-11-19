@@ -49,6 +49,7 @@
 > | desc    | string   | Anzeige Name auf Gerät und Visualisierung |
 > | type    | string   | Geräte Type                               |
 > | subType | string   | Welche Hardware Funktion ist vorhanden    |
+> | sw      | string   | Software Version                          |
 > 
 > 
 > ### Heartbeat Gerät
@@ -59,24 +60,42 @@
 > #### Payload
 > `{"timeStamp":"772010416","uptime":"83963020"}`
 >
-> | Name        | Wert   | Beschreibung                |
-> |-------------|--------|-----------------------------|
-> | timeStamp   | uint   | Ticks in sek sei 01.01.2000 |
-> | uptime      | uint   | Ticks in sek sei start      |
+> | Name        | Wert   | Beschreibung                 |
+> |-------------|--------|------------------------------|
+> | timeStamp   | uint   | Ticks in sek seit 01.01.2000 |
+> | uptime      | uint   | Ticks in sek seit start      |
+
+
+> ### Cloud Infos
+> #### Topic
+>   `iBBfly/C8F09E1266B0/cloudinfo`
+>
+> Wird gesendet, wenn Topic info vom Gerät kommt
+>
+> #### Payload
+> `{"hbGuid": "7bb1cfe6-b00e-4a1b-81b9-e760a561b301", "hbName": "Mein Zuhause", "mapName": "Koffer", "timeStamp":"772010416"}`
+>
+> | Name      | Wert   | Beschreibung                                    |
+> |-----------|--------|-------------------------------------------------|
+> | hbGuid    | string | HouseBase Guid (ist leer wenn nicht zugewiesen) |
+> | hbName    | string | System Beschreibung (max 10 zeichen)            |
+> | mapName   | string | Map Name (max 10 zeichen)                       |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000                    |
 
 
 > ### Gerät Kommando 
 > #### Topic
->   `iBBfly/C8F09E1266B0/command`
+>   `iBBfly/C8F09E1266B0/cloudcommand`
 >
 >
 > #### Payload
-> `{"value": "reboot","timeStamp":"748695077"}`
+> `{"command": "update","value": "1.25","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | value     | enum   | Kommando siehe CommandsEnum |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                          |
+> |-----------|--------|---------------------------------------|
+> | command   | enum   | Kommando siehe CommandsEnum           |
+> | value     | string | Zusätzliche info, z.B. update version |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000          |
 >
 > #### CommandsEnum
 >        Reboot,
@@ -84,6 +103,7 @@
 >        Identify,
 >        JumpOut,
 >        MqttReconnect,
+>        ChangeDescription,
 
 > ### Information Hardware Funktionen
 > #### Topic
@@ -180,10 +200,10 @@
 > #### Payload
 > `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | value     | bool   | on / off                    |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                 |
+> |-----------|--------|------------------------------|
+> | value     | bool   | on / off                     |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
 
 
 > ### Command
@@ -193,10 +213,10 @@
 > #### Payload
 > `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | value     | bool   | on / off                    |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                 |
+> |-----------|--------|------------------------------|
+> | value     | bool   | on / off                     |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -282,10 +302,10 @@
 > #### Payload
 > `{"value":"21.5","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | value     | float  |                             |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                 |
+> |-----------|--------|------------------------------|
+> | value     | float  |                              |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
 
 
 ******
@@ -317,7 +337,7 @@
 > | Name      | Wert   | Beschreibung                                           |
 > |-----------|--------|--------------------------------------------------------|
 > | value     | enum   | stop / up / down → Wenn nicht am Fahren dann ist Stopp |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000                            |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000                           |
 
 
 > ### Command
@@ -332,7 +352,7 @@
 > |-----------|--------------|-------------------------------------------------------------------------------|
 > | value     | enum / float | stop / up / down / open / close oder prozent 0.0-100.0 mit einer Komma Stelle |
 > | slat      | enum / float | open / close oder prozent 0.0-100 mit einer Komma Stelle                      |
-> | timeStamp | uint         | Ticks in sek sei 01.01.2000                                                   |
+> | timeStamp | uint         | Ticks in sek seit 01.01.2000                                                  |
 
 
 > ### Position
@@ -343,10 +363,10 @@
 > #### Payload
 > `{"value":"50","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                             |
-> |-----------|--------|------------------------------------------|
-> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle   |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000              |
+> | Name      | Wert   | Beschreibung                           |
+> |-----------|--------|----------------------------------------|
+> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
 
 
 > ### Slat
@@ -360,10 +380,10 @@
 > #### Payload
 > `{"value":"50","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                             |
-> |-----------|--------|------------------------------------------|
-> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle   |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000              |
+> | Name      | Wert   | Beschreibung                           |
+> |-----------|--------|----------------------------------------|
+> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
 
 
 ******
@@ -404,7 +424,7 @@
 >> | Name      | Wert   | Beschreibung                           |
 >> |-----------|--------|----------------------------------------|
 >> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp | uint   | Ticks in sek sei 01.01.2000            |
+>> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
 >
 >> #### Payload color
 >> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"748695077"}`
@@ -414,7 +434,7 @@
 >> | hue        | float  | 0.0-360 mit einer Komma Stelle         |
 >> | saturation | float  | Prozent 0.0-100 mit einer Komma Stelle |
 >> | value      | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp  | uint   | Ticks in sek sei 01.01.2000            |
+>> | timeStamp  | uint   | Ticks in sek seit 01.01.2000           |
 >>
 >
 >> #### Payload color temperature
@@ -424,7 +444,7 @@
 >> |-------------|--------|----------------------------------------|
 >> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle |
 >> | temperature | int    | 2700 bis 6500 Kelvin                   |
->> | timeStamp   | uint   | Ticks in sek sei 01.01.2000            |
+>> | timeStamp   | uint   | Ticks in sek seit 01.01.2000           |
 >>
 
 
@@ -438,7 +458,7 @@
 >> | Name      | Wert   | Beschreibung                           |
 >> |-----------|--------|----------------------------------------|
 >> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp | uint   | Ticks in sek sei 01.01.2000            |
+>> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
 >
 >> #### Payload color
 >> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"748695077"}`
@@ -448,17 +468,17 @@
 >> | hue        | float  | 0.0-360 mit einer Komma Stelle         |
 >> | saturation | float  | Prozent 0.0-100 mit einer Komma Stelle |
 >> | value      | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp  | uint   | Ticks in sek sei 01.01.2000            |
+>> | timeStamp  | uint   | Ticks in sek seit 01.01.2000           |
 >>
 >
 >> #### Payload color temperature
 >> `{"value":"54.2","temperature":"54.2","timeStamp":"748695077"}`
 >>
->> | Name        | Wert   | Beschreibung                           |
->> |-------------|--------|----------------------------------------|
->> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | temperature | int    | 2700 bis 6500 Kelvin                   |
->> | timeStamp   | uint   | Ticks in sek sei 01.01.2000            |
+>> | Name        | Wert   | Beschreibung                            |
+>> |-------------|--------|-----------------------------------------|
+>> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle  |
+>> | temperature | int    | 2700 bis 6500 Kelvin                    |
+>> | timeStamp   | uint   | Ticks in sek seit 01.01.2000            |
 >>
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -489,10 +509,10 @@
 > #### Payload
 > `{"value":"20.1","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                                  |
-> |-----------|--------|-----------------------------------------------|
-> | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000                   |
+> | Name      | Wert   | Beschreibung                                   |
+> |-----------|--------|------------------------------------------------|
+> | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle  |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000                   |
 
 
 > ### Command
@@ -502,10 +522,10 @@
 > #### Payload
 > `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                                  |
-> |-----------|--------|-----------------------------------------------|
-> | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000                   |
+> | Name      | Wert   | Beschreibung                                    |
+> |-----------|--------|-------------------------------------------------|
+> | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle   |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000                    |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -537,10 +557,10 @@
 > #### Payload
 > `{"value":"off","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | value     | bool   | on / off                    |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                 |
+> |-----------|--------|------------------------------|
+> | value     | bool   | on / off                     |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
 
 
 ******
@@ -570,10 +590,10 @@
 > #### Payload
 > `{"value":"click","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | value     | enum   | click / longClick           |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                 |
+> |-----------|--------|------------------------------|
+> | value     | enum   | click / longClick            |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
 
 
 
@@ -617,11 +637,11 @@
 > #### Payload
 > `{"id":"Aufraeumen","value":"on","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                |
-> |-----------|--------|-----------------------------|
-> | id        | string | Eindeutige ID               |
-> | value     | bool   | on / off                    |
-> | timeStamp | uint   | Ticks in sek sei 01.01.2000 |
+> | Name      | Wert   | Beschreibung                 |
+> |-----------|--------|------------------------------|
+> | id        | string | Eindeutige ID                |
+> | value     | bool   | on / off                     |
+> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
 
 
 ******
