@@ -50,8 +50,8 @@
 > | type    | string   | Geräte Type                               |
 > | subType | string   | Welche Hardware Funktion ist vorhanden    |
 > | sw      | string   | Software Version                          |
-> 
-> 
+>
+>
 > ### Heartbeat Gerät
 > #### Topic
 >   `iBBfly/C8F09E1266B0/heartbeat`
@@ -62,7 +62,7 @@
 >
 > | Name        | Wert   | Beschreibung                 |
 > |-------------|--------|------------------------------|
-> | timeStamp   | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp   | uint   | Ticks in sek seit 01.01.1970 |
 > | uptime      | uint   | Ticks in sek seit start      |
 
 
@@ -80,10 +80,10 @@
 > | hbGuid    | string | HouseBase Guid (ist leer wenn nicht zugewiesen) |
 > | hbName    | string | System Beschreibung (max 10 zeichen)            |
 > | mapName   | string | Map Name (max 10 zeichen)                       |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000                    |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970                    |
 
 
-> ### Gerät Kommando 
+> ### Gerät Kommando
 > #### Topic
 >   `iBBfly/C8F09E1266B0/cloudcommand`
 >
@@ -95,7 +95,7 @@
 > |-----------|--------|---------------------------------------|
 > | command   | enum   | Kommando siehe CommandsEnum           |
 > | value     | string | Zusätzliche info, z.B. update version |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000          |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970          |
 >
 > #### CommandsEnum
 >        Reboot,
@@ -104,6 +104,7 @@
 >        JumpOut,
 >        MqttReconnect,
 >        ChangeDescription,
+>        GetAllStates,
 
 > ### Information Hardware Funktionen
 > #### Topic
@@ -125,7 +126,7 @@
 >
 
 >## Geräte Konfiguration
-> 
+>
 > - Konfigurationen werden erst angelegt (visu sichtbar) wenn einmalig vom Gerät geschickt
 > - Pro Konfiguration Parameter gibt es eigene topics. state / command
 > - Wenn im Payload "get" steht, sollte das Gerät im topic "state"
@@ -133,39 +134,39 @@
     > Wenn die Konfiguration auf dem Gerät nicht vorhanden ist dann als "error" → "notFound"
 > - Wenn die Konfiguration ausserhalb des Wertebereiches ist, dann den korrigierten wert im topic "state"
     > zurückschicken oder wenn nicht korrigiert werden kann dann als "error" → "wrongValue"
-> - Konfigurationen, die nicht als Enum definiert sind, werden Server seitig verworfen 
+> - Konfigurationen, die nicht als Enum definiert sind, werden Server seitig verworfen
     > und als antwort kommt im topic "command" im payload "error" → "notFound"
-> 
-> 
->### vom Gerät 
+>
+>
+>### vom Gerät
 > #### Topic
 >   `iBBfly/C8F09E1266B0/config/{ConfigSystemEnum}/state`
-> 
->### an das Gerät 
+>
+>### an das Gerät
 > #### Topic
 >   `iBBfly/C8F09E1266B0/config/{ConfigSystemEnum}/command`
-> 
+>
 >
 > #### Payload
 > ###### Wert "command"
 > `{"get": "","timeStamp":"748695077"}` \
 > `{"put": "Wert","timeStamp":"748695077"}`
-> 
+>
 > ###### Wert "state"
 > `{"value": "","timeStamp":"748695077"}`
-> 
+>
 > ###### Fehler
 > `{"error": "ConfigErrorEnum","timeStamp":"748695077"}`
 >
-> 
-> 
+>
+>
 >#### ConfigErrorEnum
 > | Name       | Beschreibung                                                |
 > |------------|-------------------------------------------------------------|
 > | notFound   | Wenn Parameter nicht vorhanden                              |
 > | wrongValue | Wen wert ausserhalb gültigen bereich oder wertetyp ungültig |
 
-> 
+>
 > #### ConfigSystemEnum
 > | Name            | Kurz Name | Wert | Wert Bereich | Beschreibung                                            |
 > |-----------------|-----------|------|--------------|---------------------------------------------------------|
@@ -182,7 +183,7 @@
 >   `iBBfly/C8F09E1266B0/asset/relais_0/info`
 >
 >
-> #### Payload 
+> #### Payload
 > `{"desc":"Licht Links","active":"true","visu":"1"}`
 >
 > | Name   | Wert      | Beschreibung                                                       |
@@ -203,7 +204,7 @@
 > | Name      | Wert   | Beschreibung                 |
 > |-----------|--------|------------------------------|
 > | value     | bool   | on / off                     |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970 |
 
 
 > ### Command
@@ -216,11 +217,11 @@
 > | Name      | Wert   | Beschreibung                 |
 > |-----------|--------|------------------------------|
 > | value     | bool   | on / off                     |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970 |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
-> 
+>
 >### Relais Konfiguration
 >
 >
@@ -251,7 +252,7 @@
 > |-----------------|-----------|------|----------------|---------------------------------------------------------------|
 > | centralFunction | CF        | bool | true / false   | Reagiert dieses Gerät auf Zentral Funktionen (z.B. Alles Aus) |
 > | GreenSwitch     | GS        | uint | 0-86400 in Sek | Automatisch ausschalten nach eingestellte Zeit                |
->  
+>
 
 
 ******
@@ -273,7 +274,7 @@
 > | name   | string    | Technische Name                                                    |
 > | active | bool      | Ist lokale Funktion aktiv → true / false                           |
 > | visu   | 0 / 1 / 2 | Automatisches Einfügen in Visu → 0 = Nie; 1 = Immer; 2 = Assistent |
->  
+>
 >
 > #### MeteoType
 >        Temperature, // Temp
@@ -305,7 +306,7 @@
 > | Name      | Wert   | Beschreibung                 |
 > |-----------|--------|------------------------------|
 > | value     | float  |                              |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970 |
 
 
 ******
@@ -337,7 +338,7 @@
 > | Name      | Wert   | Beschreibung                                           |
 > |-----------|--------|--------------------------------------------------------|
 > | value     | enum   | stop / up / down → Wenn nicht am Fahren dann ist Stopp |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000                           |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970                           |
 
 
 > ### Command
@@ -352,7 +353,7 @@
 > |-----------|--------------|-------------------------------------------------------------------------------|
 > | value     | enum / float | stop / up / down / open / close oder prozent 0.0-100.0 mit einer Komma Stelle |
 > | slat      | enum / float | open / close oder prozent 0.0-100 mit einer Komma Stelle                      |
-> | timeStamp | uint         | Ticks in sek seit 01.01.2000                                                  |
+> | timeStamp | uint         | Ticks in sek seit 01.01.1970                                                  |
 
 
 > ### Position
@@ -363,16 +364,16 @@
 > #### Payload
 > `{"value":"50","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                           |
-> |-----------|--------|----------------------------------------|
-> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
+> | Name      | Wert         | Beschreibung                                                                  |
+> |-----------|--------------|-------------------------------------------------------------------------------|
+> | value     | enum / float | stop / up / down / open / close oder prozent 0.0-100.0 mit einer Komma Stelle |
+> | timeStamp | uint         | Ticks in sek seit 01.01.1970                                                  |
 
 
 > ### Slat
-> 
+>
 > Winkel der Lamelle
-> 
+>
 > #### Topic
 > `iBBfly/C8F09E1266B0/asset/shutter_0/slat`
 >
@@ -380,10 +381,10 @@
 > #### Payload
 > `{"value":"50","timeStamp":"748695077"}`
 >
-> | Name      | Wert   | Beschreibung                           |
-> |-----------|--------|----------------------------------------|
-> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
+> | Name      | Wert         | Beschreibung                                                 |
+> |-----------|--------------|--------------------------------------------------------------|
+> | value     | enum / float | open / close oder prozent 0.0-100.0 mit einer Komma Stelle   |
+> | timeStamp | uint         | Ticks in sek seit 01.01.1970                                 |
 
 
 ******
@@ -424,7 +425,7 @@
 >> | Name      | Wert   | Beschreibung                           |
 >> |-----------|--------|----------------------------------------|
 >> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
+>> | timeStamp | uint   | Ticks in sek seit 01.01.1970           |
 >
 >> #### Payload color
 >> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"748695077"}`
@@ -434,7 +435,7 @@
 >> | hue        | float  | 0.0-360 mit einer Komma Stelle         |
 >> | saturation | float  | Prozent 0.0-100 mit einer Komma Stelle |
 >> | value      | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp  | uint   | Ticks in sek seit 01.01.2000           |
+>> | timeStamp  | uint   | Ticks in sek seit 01.01.1970           |
 >>
 >
 >> #### Payload color temperature
@@ -444,7 +445,7 @@
 >> |-------------|--------|----------------------------------------|
 >> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle |
 >> | temperature | int    | 2700 bis 6500 Kelvin                   |
->> | timeStamp   | uint   | Ticks in sek seit 01.01.2000           |
+>> | timeStamp   | uint   | Ticks in sek seit 01.01.1970           |
 >>
 
 
@@ -458,7 +459,7 @@
 >> | Name      | Wert   | Beschreibung                           |
 >> |-----------|--------|----------------------------------------|
 >> | value     | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp | uint   | Ticks in sek seit 01.01.2000           |
+>> | timeStamp | uint   | Ticks in sek seit 01.01.1970           |
 >
 >> #### Payload color
 >> `{"hue":"54.2","saturation":"54.2","value":"54.2","timeStamp":"748695077"}`
@@ -468,7 +469,7 @@
 >> | hue        | float  | 0.0-360 mit einer Komma Stelle         |
 >> | saturation | float  | Prozent 0.0-100 mit einer Komma Stelle |
 >> | value      | float  | Prozent 0.0-100 mit einer Komma Stelle |
->> | timeStamp  | uint   | Ticks in sek seit 01.01.2000           |
+>> | timeStamp  | uint   | Ticks in sek seit 01.01.1970           |
 >>
 >
 >> #### Payload color temperature
@@ -478,7 +479,7 @@
 >> |-------------|--------|-----------------------------------------|
 >> | value       | float  | Prozent 0.0-100 mit einer Komma Stelle  |
 >> | temperature | int    | 2700 bis 6500 Kelvin                    |
->> | timeStamp   | uint   | Ticks in sek seit 01.01.2000            |
+>> | timeStamp   | uint   | Ticks in sek seit 01.01.1970            |
 >>
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -512,7 +513,7 @@
 > | Name      | Wert   | Beschreibung                                   |
 > |-----------|--------|------------------------------------------------|
 > | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle  |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000                   |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970                   |
 
 
 > ### Command
@@ -525,7 +526,7 @@
 > | Name      | Wert   | Beschreibung                                    |
 > |-----------|--------|-------------------------------------------------|
 > | value     | float  | °C Sollwert Temperatur mit einer Komma Stelle   |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000                    |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970                    |
 >
 > Wird nach dem Ausführen vom Gerät wieder gelöscht
 
@@ -560,7 +561,7 @@
 > | Name      | Wert   | Beschreibung                 |
 > |-----------|--------|------------------------------|
 > | value     | bool   | on / off                     |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970 |
 
 
 ******
@@ -593,19 +594,19 @@
 > | Name      | Wert   | Beschreibung                 |
 > |-----------|--------|------------------------------|
 > | value     | enum   | click / longClick            |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970 |
 
 
 
-> ### Cello2 
-> 
+> ### Cello2
+>
 > #### Taster anordnung
 >
 > ` button_0 ¦ button_1 `\
 > ` ---------¦--------- `\
 > ` button_2 ¦ button_3 `
-> 
-> 
+>
+>
 
 
 ******
@@ -641,7 +642,7 @@
 > |-----------|--------|------------------------------|
 > | id        | string | Eindeutige ID                |
 > | value     | bool   | on / off                     |
-> | timeStamp | uint   | Ticks in sek seit 01.01.2000 |
+> | timeStamp | uint   | Ticks in sek seit 01.01.1970 |
 
 
 ******
